@@ -1,0 +1,34 @@
+<div class="container">
+  <h1>List of users</h1>
+  <%= form_tag "/", :method => :get, class: "form-inline" do %>
+    <%= text_field_tag :query, params[:query], class: "form-control" %> 
+    <%= submit_tag "Search!", class: "btn btn-primary" %>
+    <% if params[:query].present? %>
+      <%= link_to "Clear", root_path, class: "btn btn-warning" %>
+    <% end %>
+  <% end %>
+
+  <%= will_paginate @query.hits, class: 'pagination' %>
+
+  <table class="table table-striped"> 
+    <thead> 
+      <tr>
+        <% @table_columns.each do |col| %>
+          <th><%= col.humanize %></th> 
+        <% end %>
+      </tr>
+    </thead>
+    <tbody> 
+      <% @users.each do |user| %>
+        <tr>
+          <% @table_columns.each do |col| %>      
+            <td><%= col == "web" ? link_to(user.send(col), user.send(col)) : simple_highlight(user.send(col)) %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody> 
+  </table>
+  <%= will_paginate @query.hits, class: 'pagination' %>
+</div>
+</div>
+</div>
